@@ -9,20 +9,27 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-	return 'Hello World!'
+    return 'Hello World!'
 
 @app.route('/something')
 def something():
-	return 'something!'
+    return 'something!'
 
 @app.route('/mongo')
 def mongo():
-	# db = app18404502
-	MONGO_URL = os.environ.get('MONGOHQ_URL')
-	#connection = Connection(MONGO_URL)
-	client = MongoClient(MONGO_URL)
+    # db = app18404502
+    MONGO_URL = os.environ.get('MONGOHQ_URL')
 
-	# Specify the database
-	db = client.app18404502
-	# Print a list of collections
-	return jsonify(db.collection_names()[0])
+    app.logger.debug(MONGO_URL)
+
+    #connection = Connection(MONGO_URL)
+    client = MongoClient(MONGO_URL)
+
+    # Specify the database
+    db = client.app18404502
+    app.logger.debug(db.collection_names)
+    # msg = db.collection_names
+    app.logger.debug(db.collection_names()[0])
+    str = db.collection_names()[0]
+    # Print a list of collections
+    return str
