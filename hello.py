@@ -16,37 +16,39 @@ app.config['DEBUG'] = True
 # Set up database
 client = MongoClient(MONGO_URL)
 db = client.app18404502
-collection = db.kgdata
+karung_gunis = db.karung_gunis
+sellers = db.sellers
+advertisements = db.advertisements
 
 @app.route('/')
 def index():
 	return 'Nothing to do here.'
 
 # List all karung gunis
-@app.route(API_ROUTE_PREFIX + 'karunggunis')
-def karungGunis():
-	result = [document for document in collection.find({ 'role': 'kg' })]
+@app.route(API_ROUTE_PREFIX + 'karung_gunis')
+def karung_gunis_array():
+	result = [document for document in karung_gunis.find()]
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
 # Get specific karung guni
-@app.route(API_ROUTE_PREFIX + 'karunggunis/<_id>')
-def getKarungGuni(_id):
-	result = collection.find_one({ '_id': ObjectId(_id) })
+@app.route(API_ROUTE_PREFIX + 'karung_gunis/<_id>')
+def karung_guni_object(_id):
+	result = karung_gunis.find_one({ '_id': ObjectId(_id) })
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
 # List all sellers
 @app.route(API_ROUTE_PREFIX + 'sellers')
-def sellers():
-	result = [document for document in collection.find({ 'role': 'seller' })]
+def sellers_array():
+	result = [document for document in sellers.find()]
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
 # Get specific seller
 @app.route(API_ROUTE_PREFIX + 'sellers/<_id>')
-def getSeller(_id):
-	result = collection.find_one({ '_id': ObjectId(_id) })
+def seller_object(_id):
+	result = sellers.find_one({ '_id': ObjectId(_id) })
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
