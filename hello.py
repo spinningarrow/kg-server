@@ -1,9 +1,10 @@
 import os
 import datetime
 import pymongo
-from flask import Flask, json, jsonify
+from flask import Flask, Response, json, jsonify
 from pymongo import MongoClient
 from bson.json_util import dumps
+from bson.objectid import ObjectId
 
 API_VERSION = '1.0'
 API_ROUTE_PREFIX = '/api/' + API_VERSION + '/'
@@ -24,14 +25,30 @@ def index():
 # List all karung gunis
 @app.route(API_ROUTE_PREFIX + 'karunggunis')
 def karungGunis():
-	result = [dumps(document) for document in collection.find({ 'role': 'kg' })]
-	return jsonify(result=result)
+	result = [document for document in collection.find({ 'role': 'kg' })]
+	resp = Response(dumps(result), status=200, mimetype='application/json')
+	return resp
+
+# Get specific karung guni
+@app.route(API_ROUTE_PREFIX + 'karunggunis/<_id>')
+def getKarungGuni(_id):
+	result = collection.find_one({ '_id': ObjectId(_id) })
+	resp = Response(dumps(result), status=200, mimetype='application/json')
+	return resp
 
 # List all sellers
 @app.route(API_ROUTE_PREFIX + 'sellers')
 def sellers():
-	result = [dumps(document) for document in collection.find({ 'role': 'seller' })]
-	return jsonify(result=result)
+	result = [document for document in collection.find({ 'role': 'seller' })]
+	resp = Response(dumps(result), status=200, mimetype='application/json')
+	return resp
+
+# Get specific seller
+@app.route(API_ROUTE_PREFIX + 'sellers/<_id>')
+def getSeller(_id):
+	result = collection.find_one({ '_id': ObjectId(_id) })
+	resp = Response(dumps(result), status=200, mimetype='application/json')
+	return resp
 
 # Test method
 @app.route('/mongo')
