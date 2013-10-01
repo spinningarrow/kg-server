@@ -1,0 +1,4 @@
+KGs(kg_id, rating, number_of_deals_done )
+sellers( s_id, addr)
+deals(deal_id, kg_id, s_id, status)//this is the relation connecting the other three sets
+ads( ad_id, catalog, time, photo, title, description) 

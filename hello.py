@@ -22,70 +22,70 @@ advertisements = db.advertisements
 
 @app.route('/')
 def index():
-	return 'Nothing to do here.'
+    return 'Nothing to do here.'
 
 # List all karung gunis
 @app.route(API_ROUTE_PREFIX + 'karung_gunis')
 def karung_gunis_array():
-	result = [document for document in karung_gunis.find()]
-	resp = Response(dumps(result), status=200, mimetype='application/json')
-	return resp
+    result = [document for document in karung_gunis.find()]
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
 
 # Get specific karung guni
 @app.route(API_ROUTE_PREFIX + 'karung_gunis/<_id>')
 def karung_guni_object(_id):
-	result = karung_gunis.find_one({ '_id': ObjectId(_id) })
-	resp = Response(dumps(result), status=200, mimetype='application/json')
-	return resp
+    result = karung_gunis.find_one({ '_id': ObjectId(_id) })
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
 
 # List all sellers
 @app.route(API_ROUTE_PREFIX + 'sellers')
 def sellers_array():
-	result = [document for document in sellers.find()]
-	resp = Response(dumps(result), status=200, mimetype='application/json')
-	return resp
+    result = [document for document in sellers.find()]
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
 
 # Get specific seller
 @app.route(API_ROUTE_PREFIX + 'sellers/<_id>')
 def seller_object(_id):
-	result = sellers.find_one({ '_id': ObjectId(_id) })
-	resp = Response(dumps(result), status=200, mimetype='application/json')
-	return resp
+    result = sellers.find_one({ '_id': ObjectId(_id) })
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
 
 # Test method
 @app.route('/mongo')
 def mongo():
-	# Specify the database
-	# Print a list of collections
-	# print db.collection_names()
+    # Specify the database
+    # Print a list of collections
+    # print db.collection_names()
 
-	# Specify the collection, in this case 'monsters'
+    # Specify the collection, in this case 'monsters'
 
-	# Get a count of the documents in this collection
-	count = collection.count()
-	# print "The number of documents you have in this collection is:", count
+    # Get a count of the documents in this collection
+    count = collection.count()
+    # print "The number of documents you have in this collection is:", count
 
-	# Create a document for a monster
-	monster = {"name": "Vampirus",
-			   "occupation": "Blood Sucker",
-			   "tags": ["vampire", "teeth", "bat"],
-			   "date": datetime.datetime.utcnow()
-			   }
+    # Create a document for a monster
+    monster = {"name": "Vampirus",
+               "occupation": "Blood Sucker",
+               "tags": ["vampire", "teeth", "bat"],
+               "date": datetime.datetime.utcnow()
+    }
 
-	# Insert the monster document into the monsters collection
-	# monster_id = collection.insert(monster)
+    # Insert the monster document into the monsters collection
+    # monster_id = collection.insert(monster)
 
-	# Print out our monster documents
-	# for monster in collection.find():
-		# print monster
-	# results = collection.find()
-	result = [dumps(document) for document in collection.find()]
-	app.logger.debug(collection.find()[0])
-	return jsonify(res=result)
+    # Print out our monster documents
+    # for monster in collection.find():
+    # print monster
+    # results = collection.find()
+    result = [dumps(document) for document in collection.find()]
+    app.logger.debug(collection.find()[0])
+    return jsonify(res=result)
 
-	# # Query for a particular monster
-	# print collection.find_one({"name": "Dracula"})
+# # Query for a particular monster
+# print collection.find_one({"name": "Dracula"})
 
 # Run Flask application
 if __name__ == '__main__':
-	app.run()
+    app.run()
