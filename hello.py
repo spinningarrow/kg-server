@@ -52,6 +52,20 @@ def seller_object(_id):
     resp = Response(dumps(result), status=200, mimetype='application/json')
     return resp
 
+# List all advertisements
+@app.route(API_ROUTE_PREFIX + 'advertisements')
+def advertisements_array():
+	result = [document for document in advertisements.find()]
+	resp = Response(dumps(result), status=200, mimetype='application/json')
+	return resp
+
+# Get specific advertisement
+@app.route(API_ROUTE_PREFIX + 'advertisements/<_id>')
+def seller_object(_id):
+	result = advertisements.find_one({ '_id': ObjectId(_id) })
+	resp = Response(dumps(result), status=200, mimetype='application/json')
+	return resp
+
 # Test method
 @app.route('/mongo')
 def mongo():
