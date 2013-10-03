@@ -61,7 +61,7 @@ def advertisements_array():
 
 # Get specific advertisement
 @app.route(API_ROUTE_PREFIX + 'advertisements/<_id>')
-def seller_object(_id):
+def advertisement_object(_id):
 	result = advertisements.find_one({ '_id': ObjectId(_id) })
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
