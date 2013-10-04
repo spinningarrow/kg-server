@@ -67,6 +67,13 @@ def advertisement_object(_id):
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
+# List all users
+@app.route(API_ROUTE_PREFIX + 'users')
+def users_array():
+    result = [document for document in users.find()]
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
+
 # Get specific user by email address
 @app.route(API_ROUTE_PREFIX + 'users/<email>')
 def user_object(email):
