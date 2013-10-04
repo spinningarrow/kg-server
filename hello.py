@@ -19,6 +19,7 @@ db = client.app18404502
 karung_gunis = db.karung_gunis
 sellers = db.sellers
 advertisements = db.advertisements
+users = db.users
 
 @app.route('/')
 def index():
@@ -65,6 +66,13 @@ def advertisement_object(_id):
 	result = advertisements.find_one({ '_id': ObjectId(_id) })
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
+
+# Get specific user by email address
+@app.route(API_ROUTE_PREFIX + 'users/<email>')
+def user_object(email):
+    result = users.find_one({ 'email': email })
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
 
 # Test method
 @app.route('/mongo')
