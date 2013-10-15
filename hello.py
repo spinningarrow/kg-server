@@ -1,7 +1,7 @@
 import os
 import datetime
 import pymongo
-from flask import Flask, Response, json, jsonify
+from flask import Flask, Response, json, jsonify, request
 from pymongo import MongoClient
 from bson.json_util import dumps
 from bson.objectid import ObjectId
@@ -67,12 +67,22 @@ def advertisement_object(_id):
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
-# List all users
-@app.route(API_ROUTE_PREFIX + 'users')
+# List all users, or create a new one
+@app.route(API_ROUTE_PREFIX + 'users', methods=['GET', 'POST'])
 def users_array():
-    result = [document for document in users.find()]
-    resp = Response(dumps(result), status=200, mimetype='application/json')
-    return resp
+    if request.method == 'POST':
+        user_id = users.insert({
+            'email': request.form['email'],
+            'password': request.form['password']
+        })
+
+        result = users.find_one({ '_id': ObjectId(user_id) })
+        resp = Response(dumps(result), status=201, mimetype='application/json')
+        return resp
+    else:
+        result = [document for document in users.find()]
+        resp = Response(dumps(result), status=200, mimetype='application/json')
+        return resp
 
 # Get specific user by email address
 @app.route(API_ROUTE_PREFIX + 'users/<email>')
