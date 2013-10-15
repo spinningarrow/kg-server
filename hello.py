@@ -26,10 +26,20 @@ def index():
     return 'Nothing to do here.'
 
 # List all karung gunis
-@app.route(API_ROUTE_PREFIX + 'karung_gunis')
+@app.route(API_ROUTE_PREFIX + 'karung_gunis', methods=['GET', 'POST'])
 def karung_gunis_array():
-    result = [document for document in karung_gunis.find()]
-    resp = Response(dumps(result), status=200, mimetype='application/json')
+    if request.method == 'POST':
+        user_id = karung_gunis.insert({
+            'email': request.form['email']
+        })
+
+        result = karung_gunis.find_one({ '_id': ObjectId(user_id) })
+        resp = Response(dumps(result), status=201, mimetype='application/json')
+
+    else:
+        result = [document for document in karung_gunis.find()]
+        resp = Response(dumps(result), status=200, mimetype='application/json')
+
     return resp
 
 # Get specific karung guni
@@ -40,10 +50,20 @@ def karung_guni_object(_id):
     return resp
 
 # List all sellers
-@app.route(API_ROUTE_PREFIX + 'sellers')
+@app.route(API_ROUTE_PREFIX + 'sellers', methods=['GET', 'POST'])
 def sellers_array():
-    result = [document for document in sellers.find()]
-    resp = Response(dumps(result), status=200, mimetype='application/json')
+    if request.method == 'POST':
+        user_id = sellers.insert({
+            'email': request.form['email']
+        })
+
+        result = sellers.find_one({ '_id': ObjectId(user_id) })
+        resp = Response(dumps(result), status=201, mimetype='application/json')
+
+    else:
+        result = [document for document in sellers.find()]
+        resp = Response(dumps(result), status=200, mimetype='application/json')
+
     return resp
 
 # Get specific seller
@@ -78,11 +98,11 @@ def users_array():
 
         result = users.find_one({ '_id': ObjectId(user_id) })
         resp = Response(dumps(result), status=201, mimetype='application/json')
-        return resp
     else:
         result = [document for document in users.find()]
         resp = Response(dumps(result), status=200, mimetype='application/json')
-        return resp
+
+    return resp
 
 # Get specific user by email address
 @app.route(API_ROUTE_PREFIX + 'users/<email>')
