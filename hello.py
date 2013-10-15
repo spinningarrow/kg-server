@@ -1,5 +1,6 @@
 import os
 import datetime
+import time
 import pymongo
 from flask import Flask, Response, json, jsonify, request
 from pymongo import MongoClient
@@ -30,7 +31,8 @@ def index():
 def karung_gunis_array():
     if request.method == 'POST':
         user_id = karung_gunis.insert({
-            'email': request.form['email']
+            'email': request.form['email'],
+            'created': time.time()
         })
 
         result = karung_gunis.find_one({ '_id': ObjectId(user_id) })
@@ -54,7 +56,8 @@ def karung_guni_object(_id):
 def sellers_array():
     if request.method == 'POST':
         user_id = sellers.insert({
-            'email': request.form['email']
+            'email': request.form['email'],
+            'created': time.time()
         })
 
         result = sellers.find_one({ '_id': ObjectId(user_id) })
@@ -99,7 +102,8 @@ def users_array():
         else:
             user_id = users.insert({
                 'email': request.form['email'],
-                'password': request.form['password']
+                'password': request.form['password'],
+                'created': time.time()
             })
 
             result = users.find_one({ '_id': ObjectId(user_id) })
