@@ -91,15 +91,23 @@ def advertisement_object(_id):
 @app.route(API_ROUTE_PREFIX + 'users', methods=['GET', 'POST'])
 def users_array():
     if request.method == 'POST':
-        user_id = users.insert({
-            'email': request.form['email'],
-            'password': request.form['password']
-        })
+        # Check if a user by that email already exists
+        if users.find_one({ 'email': request.form['email'] }):
+            # Return 409 Conflicted
+            resp = Response(dumps({ 'error': 'User already exists' }), status=409, mimetype='application/json')
 
-        result = users.find_one({ '_id': ObjectId(user_id) })
-        resp = Response(dumps(result), status=201, mimetype='application/json')
+        else:
+            user_id = users.insert({
+                'email': request.form['email'],
+                'password': request.form['password']
+            })
+
+            result = users.find_one({ '_id': ObjectId(user_id) })
+            # Return 201 Created
+            resp = Response(dumps(result), status=201, mimetype='application/json')
     else:
         result = [document for document in users.find()]
+        # Return 200 OK
         resp = Response(dumps(result), status=200, mimetype='application/json')
 
     return resp
