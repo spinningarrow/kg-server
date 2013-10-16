@@ -32,6 +32,7 @@ def karung_gunis_array():
     if request.method == 'POST':
         user_id = karung_gunis.insert({
             'email': request.form['email'],
+            'display_name': request.form['display_name'],
             'created': time.time()
         })
 
@@ -57,6 +58,7 @@ def sellers_array():
     if request.method == 'POST':
         user_id = sellers.insert({
             'email': request.form['email'],
+            'display_name': request.form['display_name'],
             'created': time.time()
         })
 
