@@ -125,7 +125,7 @@ def user_object(email):
     role = None
 
     if karung_gunis.find_one({ 'email': result['email'] }):
-        role = 'KARUNG_GUNI'
+        role = 'KARUNGGUNI'
     elif sellers.find_one({ 'email': result['email'] }):
         role = 'SELLER'
 
