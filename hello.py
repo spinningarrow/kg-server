@@ -122,16 +122,24 @@ def users_array():
 @app.route(API_ROUTE_PREFIX + 'users/<email>')
 def user_object(email):
     result = users.find_one({ 'email': email })
-    role = None
 
-    if karung_gunis.find_one({ 'email': result['email'] }):
-        role = 'KARUNGGUNI'
-    elif sellers.find_one({ 'email': result['email'] }):
-        role = 'SELLER'
+    # If no user found, reutrn a 404
+    if result is None:
+        resp = Response(dumps({ 'error': 'No user found' }), status=404, mimetype='application/json')
 
-    result['role'] = role
+    # Otherwise check if the user is a KG or a seller and return the
+    # role in the response
+    else:
+        role = None
 
-    resp = Response(dumps(result), status=200, mimetype='application/json')
+        if karung_gunis.find_one({ 'email': result['email'] }):
+            role = 'KARUNGGUNI'
+        elif sellers.find_one({ 'email': result['email'] }):
+            role = 'SELLER'
+
+        result['role'] = role
+
+        resp = Response(dumps(result), status=200, mimetype='application/json')
     return resp
 
 # Test method
