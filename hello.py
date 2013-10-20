@@ -85,6 +85,13 @@ def advertisements_array():
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
+# Get advertisements by owner
+@app.route(API_ROUTE_PREFIX + 'advertisements/owner/<_id>')
+def advertisement_by_owner(_id):
+	result = [document for document in advertisements.find({ 'owner': _id })]
+	resp = Response(dumps(result), status=200, mimetype='application/json')
+	return resp
+
 # Get specific advertisement
 @app.route(API_ROUTE_PREFIX + 'advertisements/<_id>')
 def advertisement_object(_id):
