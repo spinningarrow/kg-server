@@ -92,6 +92,13 @@ def advertisement_by_owner(_id):
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
+# Show advertisements newer than (or as new as) the provided timestamp
+@app.route(API_ROUTE_PREFIX + 'advertisements/latest/<timestamp>')
+def advertisement_latest(timestamp):
+    result = [document for document in advertisements.find({ 'date_created': { '$gte': float(timestamp) } })]
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
+
 # Get specific advertisement
 @app.route(API_ROUTE_PREFIX + 'advertisements/<_id>')
 def advertisement_object(_id):
