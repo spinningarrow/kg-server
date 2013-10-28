@@ -78,12 +78,29 @@ def seller_object(_id):
     resp = Response(dumps(result), status=200, mimetype='application/json')
     return resp
 
-# List all advertisements
-@app.route(API_ROUTE_PREFIX + 'advertisements')
+# List all advertisements or create a new advertisement
+@app.route(API_ROUTE_PREFIX + 'advertisements', methods=['GET', 'POST'])
 def advertisements_array():
-	result = [document for document in advertisements.find()]
-	resp = Response(dumps(result), status=200, mimetype='application/json')
-	return resp
+    if request.method == 'POST':
+        advertisement_id = advertisements.insert({
+            'owner': request.form['owner'],
+            'title': request.form['title'],
+            'description': request.form['description'],
+            'photo_url': request.form['photo_url'],
+            'category': request.form['category'],
+            'status': request.form['status'],
+            'timing': request.form['timing'],
+            'created': time.time()
+        })
+
+        result = advertisements.find_one({ '_id': ObjectId(advertisement_id) })
+        resp = Response(dumps(result), status=201, mimetype='application/json')
+
+    else:
+        result = [document for document in advertisements.find()]
+        resp = Response(dumps(result), status=200, mimetype='application/json')
+
+    return resp
 
 # Get open advertisements
 @app.route(API_ROUTE_PREFIX + 'advertisements/open')
@@ -95,9 +112,9 @@ def advertisement_open():
 # Get advertisements by owner
 @app.route(API_ROUTE_PREFIX + 'advertisements/owner/<_id>')
 def advertisement_by_owner(_id):
-	result = [document for document in advertisements.find({ 'owner': _id })]
-	resp = Response(dumps(result), status=200, mimetype='application/json')
-	return resp
+    result = [document for document in advertisements.find({ 'owner': _id })]
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
 
 # Show advertisements newer than (or as new as) the provided timestamp
 @app.route(API_ROUTE_PREFIX + 'advertisements/latest/<timestamp>')
@@ -109,9 +126,9 @@ def advertisement_latest(timestamp):
 # Get specific advertisement
 @app.route(API_ROUTE_PREFIX + 'advertisements/<_id>')
 def advertisement_object(_id):
-	result = advertisements.find_one({ '_id': ObjectId(_id) })
-	resp = Response(dumps(result), status=200, mimetype='application/json')
-	return resp
+    result = advertisements.find_one({ '_id': ObjectId(_id) })
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
 
 # List all users, or create a new one
 @app.route(API_ROUTE_PREFIX + 'users', methods=['GET', 'POST'])
