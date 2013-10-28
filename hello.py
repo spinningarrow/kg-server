@@ -85,6 +85,13 @@ def advertisements_array():
 	resp = Response(dumps(result), status=200, mimetype='application/json')
 	return resp
 
+# Get open advertisements
+@app.route(API_ROUTE_PREFIX + 'advertisements/open')
+def advertisement_open():
+    result = [document for document in advertisements.find({ 'status': 'OPEN' })]
+    resp = Response(dumps(result), status=200, mimetype='application/json')
+    return resp
+
 # Get advertisements by owner
 @app.route(API_ROUTE_PREFIX + 'advertisements/owner/<_id>')
 def advertisement_by_owner(_id):
