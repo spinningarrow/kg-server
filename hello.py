@@ -47,9 +47,9 @@ def karung_gunis_array():
     return resp
 
 # Get specific karung guni
-@app.route(API_ROUTE_PREFIX + 'karung_gunis/<_id>')
-def karung_guni_object(_id):
-    result = karung_gunis.find_one({ '_id': ObjectId(_id) })
+@app.route(API_ROUTE_PREFIX + 'karung_gunis/<email>')
+def karung_guni_object(email):
+    result = karung_gunis.find_one({ 'email': email })
     resp = Response(dumps(result), status=200, mimetype='application/json')
     return resp
 
@@ -76,9 +76,9 @@ def sellers_array():
     return resp
 
 # Get specific seller
-@app.route(API_ROUTE_PREFIX + 'sellers/<_id>')
-def seller_object(_id):
-    result = sellers.find_one({ '_id': ObjectId(_id) })
+@app.route(API_ROUTE_PREFIX + 'sellers/<email>')
+def seller_object(email):
+    result = sellers.find_one({ 'email': email })
     resp = Response(dumps(result), status=200, mimetype='application/json')
     return resp
 
