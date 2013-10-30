@@ -59,6 +59,9 @@ def sellers_array():
         user_id = sellers.insert({
             'email': request.form['email'],
             'display_name': request.form['display_name'],
+            'address': "",
+            'address_lat': "",
+            'address_long': "",
             'created': time.time()
         })
 
