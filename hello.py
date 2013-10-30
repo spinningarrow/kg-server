@@ -33,6 +33,7 @@ def karung_gunis_array():
         user_id = karung_gunis.insert({
             'email': request.form['email'],
             'display_name': request.form['display_name'],
+            'rating': 0,
             'created': time.time()
         })
 
