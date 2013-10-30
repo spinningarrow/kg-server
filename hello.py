@@ -89,7 +89,8 @@ def advertisements_array():
             'photo_url': request.form['photo_url'],
             'category': request.form['category'],
             'status': request.form['status'],
-            'timing': request.form['timing'],
+            'timing_start': request.form['timing_start'],
+            'timing_end': request.form['timing_end'],
             'created': time.time()
         })
 
