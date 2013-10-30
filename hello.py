@@ -47,10 +47,17 @@ def karung_gunis_array():
     return resp
 
 # Get specific karung guni
-@app.route(API_ROUTE_PREFIX + 'karung_gunis/<email>')
+@app.route(API_ROUTE_PREFIX + 'karung_gunis/<email>', methods=['GET', 'POST'])
 def karung_guni_object(email):
+    if request.method == 'POST':
+        if request.form['update'] == 'true':
+            update_result = karung_gunis.update({ 'email': email }, { "$set": {
+                'display_name': request.form['display_name'],
+            } })
+
     result = karung_gunis.find_one({ 'email': email })
     resp = Response(dumps(result), status=200, mimetype='application/json')
+
     return resp
 
 # List all sellers
@@ -76,8 +83,17 @@ def sellers_array():
     return resp
 
 # Get specific seller
-@app.route(API_ROUTE_PREFIX + 'sellers/<email>')
+@app.route(API_ROUTE_PREFIX + 'sellers/<email>', methods=['GET', 'POST'])
 def seller_object(email):
+    if request.method == 'POST':
+        if request.form['update'] == 'true':
+            update_result = sellers.update({ 'email': email }, { "$set": {
+                'display_name': request.form['display_name'],
+                'address': request.form['address'],
+                'address_lat': request.form['address_lat'],
+                'address_long': request.form['address_long'],
+            } })
+
     result = sellers.find_one({ 'email': email })
     resp = Response(dumps(result), status=200, mimetype='application/json')
     return resp
